@@ -1,0 +1,1 @@
+This was a good assignment warm up. remembering some stuff I forgot about or remembered. I had a bit of an issue applying the background to the body but after troubleshooting for sometime I relized that the file path can be sensitive but I was glad I was able to figure it out. 
