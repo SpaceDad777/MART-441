@@ -1,0 +1,1 @@
+I would say that this assignment was pretty straight forward and easy to me. This reminds me of the code.org assignment (the mobile app) But we actualy had to write functions. The only challegne was understanding DOM and how it was implemented. But after reading the article you have provided and makes more sense. To my knowledge yet. 
