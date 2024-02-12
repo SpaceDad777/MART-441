@@ -1,0 +1,88 @@
+<html>
+    <style>
+        body {
+            background-color: darkseagreen;
+            font-size: larger;
+        }
+        
+    </style>
+    <script>
+        function getChoice1() {
+            var myChoice = document.getElementById("choice").value;
+            var myQuestion = document.getElementById("question");
+            if (myChoice.toLowerCase() === "indoors") {
+                document.getElementById("mainImage").src = "b03d6d99f66acb0f589933fd2a5a4a15.jpg";
+                document.getElementById("choice").style.display = "none";
+                document.getElementById("btnSubmit").style.display = "none";
+
+                document.getElementById("choice2").style.display = "block";
+                document.getElementById("btnSubmit2").style.display = "block";
+
+                myQuestion.innerHTML = "Choosing indoors is a cozy decision. Do you enjoy spending time in the comfort of indoor spaces? (yes/no)";
+            } else if (myChoice.toLowerCase() === "outdoors") { 
+                document.getElementById("mainImage").src = "b03d6d99f66acb0f589933fd2a5a4a15.jpg";
+                document.getElementById("choice").style.display = "none";
+                document.getElementById("btnSubmit").style.display = "none";
+
+                document.getElementById("choice3").style.display = "block";
+                document.getElementById("btnSubmit3").style.display = "block";
+                myQuestion.innerHTML = "Opting for outdoors is an adventurous choice. Do you love exploring the beauty of nature? (yes/no)";
+                document.getElementById("mainImage").src = "Hiking-Shoes-588x391.jpg";
+            } else {
+                myQuestion.innerHTML = "Invalid answer";
+            }
+        }
+
+        function getChoice2() {
+            var answer = document.getElementById("choice2").value;
+            var myQuestion = document.getElementById("question");
+            if (answer.toLowerCase() === "yes") {
+                document.getElementById("mainImage").src = "b03d6d99f66acb0f589933fd2a5a4a15.jpg";
+                myQuestion.innerHTML = "Enjoy the comfort of indoor spaces!";
+            } else if (answer.toLowerCase() === "no") {
+                document.getElementById("mainImage").src = "b03d6d99f66acb0f589933fd2a5a4a15.jpg";
+                myQuestion.innerHTML = "Consider embracing the coziness of indoor environments.";
+
+            } else {
+                myQuestion.innerHTML = "Invalid answer";
+            }
+        }
+
+        function getChoice3() {
+            var answer = document.getElementById("choice3").value;
+            var myQuestion = document.getElementById("question");
+            if (answer.toLowerCase() === "yes") {
+                document.getElementById("mainImage").src = "Hiking-Shoes-588x391.jpg";
+                myQuestion.innerHTML = "Explore the wonders of the outdoors!";
+            } else if (answer.toLowerCase() === "no") {
+                myQuestion.innerHTML = "Reflect on the beauty of nature and consider venturing outside.";
+            } else {
+                myQuestion.innerHTML = "Invalid answer";
+            }
+        }
+    </script>
+    <body>
+
+        <h1>What explorer are you?</h1>
+        <br>
+        <img src="image_2024-02-11_164632530.jpg" id="mainImage">
+        <div id="question">
+            <br>
+            Do you prefer indoors or outdoors?
+            <br>
+
+        </div>
+
+        <br>
+        <input type="text" size="30" id="choice" value="Please enter Indoors or Outdoors">
+        <button id="btnSubmit" onclick="getChoice1();">Click to continue</button>
+
+        <input type="text" size="30" id="choice2" value="Enter yes or no." style="display:none">
+        <button id="btnSubmit2" onclick="getChoice2();" style="display:none">Click to continue</button>
+
+        <input type="text" size="30" id="choice3" value="Enter yes or no." style="display:none">
+        <button id="btnSubmit3" onclick="getChoice3();" style="display:none">Click to continue</button>
+
+    </body>
+
+</html>
