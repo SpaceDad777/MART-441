@@ -39,13 +39,13 @@ function flipImage(number) {
 
         // Check for matching cards when two cards are flipped
         if (flippedCards.length === 2) {
-            setTimeout(checkForMatch, 3000); // Adjust the delay as needed
+            setTimeout(checkForMatch, 3000); 
         }
     } else {
         cardElement.src = blankImagePath;
         cardElement.setAttribute("data-hidden", "true");
 
-        // Remove the card from the flipped cards arrays
+        
         var index = flippedIndexes.indexOf(number);
         if (index !== -1) {
             flippedCards.splice(index, 1);
@@ -56,9 +56,7 @@ function flipImage(number) {
 
 function checkForMatch() {
     if (flippedCards[0] === flippedCards[1]) {
-        // Match found, you can add additional logic here if needed
-
-        // Clear the flipped cards arrays
+    
         flippedCards = [];
         flippedIndexes = [];
     } else {
@@ -69,7 +67,6 @@ function checkForMatch() {
             cardElement.setAttribute("data-hidden", "true");
         }
 
-        // Clear the flipped cards arrays
         flippedCards = [];
         flippedIndexes = [];
     }
