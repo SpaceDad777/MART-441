@@ -1,0 +1,18 @@
+.divTable {
+    display: table;
+    width: 100%;
+}
+
+.divTableRow {
+    display: table-row;
+}
+
+.divTableCell {
+    display: table-cell;
+}
+
+.divTableCell img {
+    width: 250px;
+    height: 200px;
+    cursor: pointer;
+}
