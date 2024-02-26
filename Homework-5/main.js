@@ -1,9 +1,9 @@
-var imageTags = ["image0", "image1", "image2", "image3", "image4", "image5", "image6", "image7", "image8", "image9", "image10", "image11"];
-var blankImagePath = "Blank image.jpg";
-var actualImages = [];
+var imageTags = ["image1", "image2", "image3", "image4", "image5", "image6", "image7", "image8", "image9", "image10", "image11", "image12"];
+var blankImagePath = "Blankimage.jpg";
+var actualImage = ["images/bird.jpg", "images/cat.jpg", "images/dog.jpg", "images/orange.jpg", "images/fox.jpg", "images/owl.jpg"];
+
 var flippedCards = [];
 var flippedIndexes = [];
-
 
 function printBlanks() {
     createRandomImageArray();
@@ -15,14 +15,13 @@ function printBlanks() {
 }
 
 function createRandomImageArray() {
-    var actualImagePath = ["images/bird.jpg", "images/cat.jpg", "images/dog.jpg", "images/orange.jpg"];
-    var count = [0, 0];
+    var count = [0, 0, 0, 0, 0, 0];
 
-    while (actualImages.length < 12) {
-        var randomNumber = Math.floor(Math.random() * actualImagePath.length);
+    while (actualImage.length < 12) {
+        var randomNumber = Math.floor(Math.random() * actualImage.length);
 
         if (count[randomNumber] < 2) {
-            actualImages.push(actualImagePath[randomNumber]);
+            actualImage.push(actualImage[randomNumber]);
             count[randomNumber] = count[randomNumber] + 1;
         }
     }
@@ -32,15 +31,15 @@ function flipImage(number) {
     var cardElement = document.getElementById(imageTags[number]);
 
     if (cardElement.getAttribute("data-hidden") === "true") {
-        cardElement.src = actualImages[number];
+        cardElement.src = actualImage[number];
         cardElement.setAttribute("data-hidden", "false");
 
-        flippedCards.push(actualImages[number]);
+        flippedCards.push(actualImage[number]);
         flippedIndexes.push(number);
 
         // Check for matching cards when two cards are flipped
         if (flippedCards.length === 2) {
-            setTimeout(checkForMatch, 1000); // Adjust the delay as needed
+            setTimeout(checkForMatch, 3000); // Adjust the delay as needed
         }
     } else {
         cardElement.src = blankImagePath;
@@ -54,6 +53,7 @@ function flipImage(number) {
         }
     }
 }
+
 function checkForMatch() {
     if (flippedCards[0] === flippedCards[1]) {
         // Match found, you can add additional logic here if needed
