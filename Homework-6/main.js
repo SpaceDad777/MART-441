@@ -4,6 +4,12 @@ var actualImage = ["images/bird.jpg", "images/cat.jpg", "images/dog.jpg", "image
 
 var flippedCards = [];
 var flippedIndexes = [];
+var attempts = 0; // Counter for attempts
+
+function startGame() {
+    // Game initialization logic
+    // ...
+}
 
 function printBlanks() {
     createRandomImageArray();
@@ -22,12 +28,13 @@ function createRandomImageArray() {
 
         if (count[randomNumber] < 2) {
             actualImage.push(actualImage[randomNumber]);
-            count[randomNumber] = count[randomNumber] + 1;
+            count[randomNumber] = count[randomNumber] + 3;
         }
     }
 }
 
 function flipImage(number) {
+    attempts++; // Increment attempts on each flip
     var cardElement = document.getElementById(imageTags[number]);
 
     if (cardElement.getAttribute("data-hidden") === "true") {
@@ -39,13 +46,12 @@ function flipImage(number) {
 
         // Check for matching cards when two cards are flipped
         if (flippedCards.length === 2) {
-            setTimeout(checkForMatch, 3000); 
+            setTimeout(checkForMatch, 500);
         }
     } else {
         cardElement.src = blankImagePath;
         cardElement.setAttribute("data-hidden", "true");
 
-        
         var index = flippedIndexes.indexOf(number);
         if (index !== -1) {
             flippedCards.splice(index, 1);
@@ -56,9 +62,12 @@ function flipImage(number) {
 
 function checkForMatch() {
     if (flippedCards[0] === flippedCards[1]) {
-    
         flippedCards = [];
         flippedIndexes = [];
+        // Check if the game is complete and redirect to the final page
+        if (isGameComplete()) {
+            redirectToFinalPage();
+        }
     } else {
         // No match, flip the cards back
         for (var i = 0; i < flippedIndexes.length; i++) {
@@ -70,4 +79,41 @@ function checkForMatch() {
         flippedCards = [];
         flippedIndexes = [];
     }
+}
+
+function isGameComplete() {
+    // Check if all cards are flipped
+    for (var i = 0; i < imageTags.length; i++) {
+        var cardElement = document.getElementById(imageTags[i]);
+        if (cardElement.getAttribute("data-hidden") === "true") {
+            return false; // If any card is still hidden, the game is not complete
+        }
+    }
+    return true; // All cards are flipped, game is complete
+}
+
+function redirectToFinalPage() {
+    // Save attempts to localStorage
+    localStorage.setItem("attempts", attempts);
+    localStorage.setItem("firstName", firstName);
+    localStorage.setItem("lastName", lastName);
+    localStorage.setItem("age", age);
+
+    // Redirect to the final results page
+    window.location = "final.html";
+}
+
+function loadPlayerInfo() {
+    // Retrieve player information from localStorage
+    var firstName = localStorage.getItem("firstName");
+    var lastName = localStorage.getItem("lastName");
+    var age = localStorage.getItem("age");
+    attempts = parseInt(localStorage.getItem("attempts")) || 0; // Retrieve attempts
+
+    // Display player information on the final page
+    document.getElementById('playerName').innerText = firstName + ' ' + lastName;
+    document.getElementById('playerAge').innerText = age;
+    document.getElementById('playerAttempts').innerText = attempts;
+    // Redirect to the final results page
+    window.location = "final.html";
 }
