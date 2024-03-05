@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual ViewMaster</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div id="image-container">
+        <img id="display-image" alt="Social Justice Image" src="Images/Social art.jpg">
+        <h2 id="title"></h2>
+        <p id="description"></p>
+        <p id="author-year"></p>
+    </div>
+    <button onclick="showRandomImage()">Show Random Image</button>
+
+    <script>
+        
+        // Define the class
+        class SocialJusticeImage {
+            constructor(title, image, description, author, year) {
+                this.title = title;
+                this.image = image;
+                this.description = description;
+                this.author = author;
+                this.year = year;
+            }
+        }
+
+        // Create objects
+        const image1 = new SocialJusticeImage("¡Cesen Deportación!,", "Images/Rupert Garcia.jpg", "“Cease Deportation!” in English—in the early 1970s to protest deportations of undocumented Mexican immigrants.", "Rupert Garcia", "1973");
+
+        const image2 = new SocialJusticeImage("Prayer discrimination at a segregated swimming pool","Images/DannyLyon.jpg", "In 1962 photographer Danny Lyon captured three young African Americans protesting through prayer in front of a “whites-only” swimming pool and recreational facility in Cairo, Illinois. Their demonstration was part of a larger effort to integrate businesses and other spaces in the town.", "Danny Lyon", "1962");
+
+        const image3 = new SocialJusticeImage("Eddie M. 'Fat' Coco Jr., Transylvania, Louisiana","Images/DeborahLuster.jpg", "Prisoners of Louisiana, a project in which she documented prisoners held in correctional facilities across Louisiana, including the infamous Angola penitentiary. This photograph has writing on the back, giving us some details about Eddie M. “Fat” CoCo, including his future plans: “Be success/Lawyer”", "Deborah Luster", "2002");
+
+        const image4 = new SocialJusticeImage(" Children of the Weill public school",
+         "Images/DorotheaLange.jpg","Dorothea Lange was hired by the War Relocation Authority to document the incarceration process. She photographed a group of public school children reciting the Pledge of Allegiance to the American flag in 1942 in San Francisco, California, as the roundup efforts began. It’s likely some of these children were sent to internment camps. The federal government hoped to use Lange’s images to promote the internment program. ","Dorothea Lange", "2023");
+
+        const image5 = new SocialJusticeImage("Magnolia","Images/GracielaIturbide.jpg",
+          "While shopping for groceries one day, she was approached by Magnolia, who wanted her picture taken. Magnolia was part of a community of muxes, individuals assigned male at birth but who identify as other genders. In some Indigenous cultures, muxes are considered a third gender and people with special powers. Magnolia holds a mirror up to her profile, doubling her image and suggesting the multiple ways that identity may be presented.","Graciela Iturbide", "1986");
+
+        // Store objects in an array
+        const imagesArray = [image1, image2, image3, image4, image5];
+
+        // Function to display a random image
+        function showRandomImage() {
+            const randomIndex = Math.floor(Math.random() * imagesArray.length);
+            const randomImage = imagesArray[randomIndex];
+
+            // Display the properties of the random image
+            document.getElementById('display-image').src = randomImage.image;
+            document.getElementById('title').innerText = randomImage.title;
+            document.getElementById('description').innerText = randomImage.description;
+            document.getElementById('author-year').innerText = `Author: ${randomImage.author}, Year: ${randomImage.year}`;
+        }
+
+        </script>
+</body>
+</html>
