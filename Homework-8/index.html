@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Art Assignment</title>
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <style>
+    /* Hide all images in the #image-container except the first one */
+    #image-container img:not(:first-child) {
+      display: none;
+    }
+
+    /* Style for images */
+    #image-container img {
+      width: 40%; /* Set the width to 100% for responsiveness */
+      height: auto; /* Maintain aspect ratio */
+    }
+
+    /* Style for text */
+    #text-container {
+      font-size: 24px; /* Set the font size to 24 pixels, adjust as needed */
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* Style for shapes */
+    .shape {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: #3498db;
+      border-radius: 50%;
+      right: 10px;
+      top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Container for images -->
+<div id="image-container">
+  <img src="Images/Cosmic_Background.jpg" alt="">
+  <img src="Images/Crab_Nebula.jpg" alt="">
+  <img src="Images/veill-nebula.jpg" alt="">
+</div>
+
+<!-- Container for text -->
+<div id="text-container"></div>
+
+<!-- Container for shapes -->
+<div id="shape-container" class="shape"></div>
+
+<script>
+  // Images array
+  const images = ['Images/Cosmic_Background.jpg', 'Images/Crab_Nebula.jpg', 'Images/veil-nebula.jpg'];
+  let currentImageIndex = 0;
+
+  // Text array
+  const texts = [
+    '"The Universe is under no obligation to make sense to you."',
+    '"I could have gone on flying through space forever"',
+    'Once you have been in space, you appreciate how small and fragile the Earth is"'
+  ];
+  let currentTextIndex = 0;
+
+  // Shapes array
+  const shapes = ['#shape-container'];
+  let currentShapeIndex = 0;
+
+  // Function to fade in and out images
+  function rotateImages() {
+    $('#image-container img').eq(currentImageIndex).fadeOut(3000, function () {
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      $('#image-container img').eq(currentImageIndex).fadeIn(3000);
+    });
+  }
+
+  // Function to rotate text
+  function rotateText() {
+    $('#text-container').fadeOut(3000, function () {
+      $(this).text(texts[currentTextIndex]).fadeIn(3000);
+      currentTextIndex = (currentTextIndex + 1) % texts.length;
+    });
+  }
+
+  // Function to move and fade shapes
+  function moveAndFadeShapes() {
+    const currentShape = shapes[currentShapeIndex];
+    $(currentShape).animate({ right: '+=100', top: '+=100' }, 5000, function () {
+      $(this).fadeOut(2000, function () {
+        currentShapeIndex = (currentShapeIndex + 1) % shapes.length;
+        $(this).css({ right: '10px', top: '10px' }).fadeIn(4000);
+      });
+    });
+  }
+
+  // Initial setup
+  $(document).ready(function () {
+    // Initial display of the first image and text
+    $('#image-container img').eq(currentImageIndex).fadeIn(2000);
+    $('#text-container').text(texts[currentTextIndex]);
+
+    // Set intervals for rotation and movement
+    setInterval(rotateImages, 7000); // Rotate images every 7 seconds
+    setInterval(rotateText, 7000);   // Rotate text every 7 seconds
+    setInterval(moveAndFadeShapes, 5000); // Move and fade shapes every 7 seconds
+  });
+</script>
+
+</body>
+</html>
