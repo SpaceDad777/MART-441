@@ -9,7 +9,7 @@ canvas {
     background-color: #858585;
     display: block;
     margin: 0 auto;
-    width: 600px; /* Optional: Define size here if consistent */
-    height: 800px; /* Optional: Define size here if consistent */
+    width: 600px; 
+    height: 800px; 
 }
 
