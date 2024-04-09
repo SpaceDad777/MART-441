@@ -66,7 +66,7 @@ fetch('objects.json')
     });
   });
 
-// Listen for keydown events
+// keydown events
 var keyState = {};
 document.addEventListener("keydown", function(event) {
   keyState[event.key] = true;
