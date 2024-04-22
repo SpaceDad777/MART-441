@@ -7,10 +7,10 @@ function createBox() {
   // create a box
   var geometry = new THREE.BoxGeometry();
   var material = new THREE.MeshBasicMaterial({
-    color: 0x324ca8
+    color: 0x008000
   });
   cube = new THREE.Mesh(geometry, material);
-  cube.position.set(50, 0, 0);
+  cube.position.set(60, 0, 0);
   scene.add(cube);
   cube.scale.x = 15; // SCALE
   cube.scale.y = 15; // SCALE
@@ -24,7 +24,7 @@ function createBox() {
 function animate() {
   requestAnimationFrame(animate);
   cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  cube.rotation.y -= 0.02;
   createBox2();
   renderer.render(scene, camera);
 
@@ -36,7 +36,7 @@ function createBox2() {
   // create a box
   var geometry = new THREE.BoxGeometry();
   var material = new THREE.MeshBasicMaterial({
-    color: 0x1234ee
+    color: 0x800080
   });
   cube2 = new THREE.Mesh(geometry, material);
   cube2.position.set(2, 0);
@@ -51,8 +51,8 @@ function createBox2() {
 
 function animate2() {
   requestAnimationFrame(animate2);
-  cube2.rotation.x += 0.05;
-  cube2.rotation.y += 0.05;
+  cube2.rotation.x += 0.1;
+  cube2.rotation.y -= 0.05;
 
 
 }
@@ -136,23 +136,23 @@ function getControls(camera, renderer) {
 }
 
 /**
- * Load Skull model
+ * Load Flower model
  **/
 
 function loadModel() {
   loader = new THREE.OBJLoader();
-  loader.load('models/Skull.obj', function (object) {
-    object.rotation.z = Math.PI;
-    modelObject = object;
-    scene.add(object);
-    animateModel();
-  });
-}
+  loader.load('Model/WaltHead.obj', 
+  
+    function (object) {
+      object.rotation.x = 0.75;
+      object.rotation.y = Math.PI;
+      object.rotation.z = 0;
 
-function animateModel() {
-  requestAnimationFrame(animateModel);
-  modelObject.rotation.x += 0.05;
-  modelObject.rotation.y += 0.05;
+      modelObject = object;
+      scene.add(object);
+      animateModel();
+      document.querySelector("h1").style.display = "none";
+    });
 }
 
 
