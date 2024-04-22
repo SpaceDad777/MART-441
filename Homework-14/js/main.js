@@ -155,6 +155,16 @@ function loadModel() {
     });
 }
 
+function animateModel() {
+  requestAnimationFrame(animateModel);
+  
+  // Add rotation update for the loaded model
+  if (modelObject) {
+    modelObject.rotation.y += 0.01; // Adjust the rotation speed as needed
+  }
+
+  renderer.render(scene, camera);
+}
 
 /**
  * Render!
