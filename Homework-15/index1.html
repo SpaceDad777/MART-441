@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Babylon.js sample code</title>
+
+        <!-- Babylon.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+        <script src="https://cdn.babylonjs.com/recast.js"></script>
+        <script src="https://cdn.babylonjs.com/ammo.js"></script>
+        <script src="https://cdn.babylonjs.com/havok/HavokPhysics_umd.js"></script>
+        <script src="https://cdn.babylonjs.com/cannon.js"></script>
+        <script src="https://cdn.babylonjs.com/Oimo.js"></script>
+        <script src="https://cdn.babylonjs.com/earcut.min.js"></script>
+        <script src="https://cdn.babylonjs.com/babylon.js"></script>
+        <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+        <script src="https://cdn.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+        <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+            
+            #canvasZone {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+<body>
+    <div id="canvasZone"><canvas id="renderCanvas"></canvas></div>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
+
+        var startRenderLoop = function (engine, canvas) {
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        }
+
+        var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
+        var createScene = function () {
+    var scene = new BABYLON.Scene(engine);
+    const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0), scene);
+    camera.attachControl(canvas, true);
+
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+    light.intensity = 0.7;
+
+    // Using the sphere as a fancy decorative orb next to the statue
+    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: 1.5, segments: 32 }, scene);
+    sphere.position.set(3, 0, 0); // Adjusted for aesthetic placement
+    var sphereMaterial = new BABYLON.StandardMaterial("sphereMaterial", scene);
+    sphereMaterial.diffuseColor = new BABYLON.Color3(0.51, 0.51, 0.54);
+    sphere.material = sphereMaterial;
+
+    // Box reimagined as a decorative base for the Yeti statue
+    var box = BABYLON.MeshBuilder.CreateBox("box", { height: 2, width: 3, depth: 3 }, scene);
+    box.position.set(0, 1, 0); // Central and elevated
+    var boxMaterial = new BABYLON.StandardMaterial("boxMaterial", scene);
+    boxMaterial.diffuseColor = new BABYLON.Color3(0.72, 0.11, 0.11); // Darker, earthy tone
+    box.material = boxMaterial;
+
+    // Triangle Roof
+    var roof = BABYLON.MeshBuilder.CreatePolygon("roof", {
+        shape: [new BABYLON.Vector3(-1.5, 0, 1.5), new BABYLON.Vector3(1.5, 0, 1.5), new BABYLON.Vector3(0, 1.5, -1.5)],
+        depth: 3
+    }, scene);
+    roof.rotation.x = Math.PI / 2; // Rotate to stand as a roof
+    roof.position = new BABYLON.Vector3(0, 3.5, 1.5); // Adjust position to sit on top of the box
+    var roofMaterial = new BABYLON.StandardMaterial("roofMaterial", scene);
+    roofMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.3, 0.2); // Similar to the box but slightly different for contrast
+    roof.material = roofMaterial;
+
+    // Cylinder used as a pathway or surrounding column
+    var cylinder = BABYLON.MeshBuilder.CreateCylinder("cylinder", { diameterTop: 0.5, diameterBottom: 0.5, height: 3, tessellation: 18 }, scene);
+    cylinder.position.set(-2, 1.5, 0);
+    var cylinderMaterial = new BABYLON.StandardMaterial("cylinderMaterial", scene);
+    cylinderMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.17, 0.11);
+    cylinder.material = cylinderMaterial;
+
+    // Cone on top of the cylinder
+    var cone = BABYLON.MeshBuilder.CreateCylinder("cone", { diameterTop: 0, diameterBottom: 2, height: 5, tessellation: 18 }, scene);
+    cone.position.set(-2, 3.75, 0); // Adjust position to be on top of the cylinder
+    var coneMaterial = new BABYLON.StandardMaterial("coneMaterial", scene);
+    coneMaterial.diffuseColor = new BABYLON.Color3(0.02, 0.2, 0.02); // Red color for the cone
+    cone.material = coneMaterial;
+
+    // Ground with a checkerboard texture represents a formal garden setting
+    var ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10 }, scene);
+    var groundMaterial = new BABYLON.StandardMaterial("Ground Material", scene);
+    groundMaterial.diffuseColor = new BABYLON.Color3(0, 0.5, 0);
+    ground.material = groundMaterial;
+
+    return scene;
+};
+
+                window.initFunction = async function() {
+                    
+                    
+                    
+                    var asyncEngineCreation = async function() {
+                        try {
+                        return createDefaultEngine();
+                        } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                        }
+                    }
+
+                    window.engine = await asyncEngineCreation();
+        if (!engine) throw 'engine should not be null.';
+        startRenderLoop(engine, canvas);
+        window.scene = createScene();};
+        initFunction().then(() => {sceneToRender = scene                    
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+</html>
