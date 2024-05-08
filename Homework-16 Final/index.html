@@ -19,6 +19,7 @@
         });
 
         var player;
+        var coins;
         var config = {
             type: Phaser.AUTO,
             width: 1200,
@@ -39,7 +40,8 @@
                     this.load.image('coin', 'Assets/Objects/coin.png');
                     this.load.image('gem', 'Assets/Objects/gem.png');
                     this.load.spritesheet('knight', 'Assets/Character/knight.png', { frameWidth: 50, frameHeight: 70 });
-                    this.load.spritesheet('character', 'Assets/Character/knight.json');
+                    // this.load.spritesheet('character', 'Assets/Character/knight.json');
+                    this.load.spritesheet('character', 'Assets/Character/knight.png',  { frameWidth: 50, frameHeight: 70 });
                 },
 
                 create: function () {
@@ -78,6 +80,9 @@
                         frameRate: 20,
                         repeat: -1
                     });
+
+                    this.physics.add.collider(player, platforms);
+                    player.body.setGravityY(300);
 
                     cursors = this.input.keyboard.createCursorKeys();
 
@@ -122,7 +127,7 @@
                         gameOver = true;
                     }
 
-                    this.physics.add.collider(player, platforms);
+                    
                     this.physics.add.collider(coins, platforms);
                     this.physics.add.collider(bombs, platforms);
 
@@ -135,10 +140,11 @@
                         return;
                     }
 
-                    if (cursors.left.isDown) {
+                    // Replace arrow key checks with WASD key checks
+                    if (cursors.left.isDown || this.input.keyboard.addKey('A').isDown) {
                         player.setVelocityX(-160);
                         player.anims.play('left', true);
-                    } else if (cursors.right.isDown) {
+                    } else if (cursors.right.isDown || this.input.keyboard.addKey('D').isDown) {
                         player.setVelocityX(160);
                         player.anims.play('right', true);
                     } else {
@@ -146,7 +152,8 @@
                         player.anims.play('turn');
                     }
 
-                    if (this.input.keyboard.checkDown(cursors.up, 500) && player.body.touching.down) {
+                    // Replace arrow key check for jumping with W key
+                    if ((cursors.up.isDown || this.input.keyboard.addKey('W').isDown) && player.body.touching.down) {
                         player.setVelocityY(-330);
                     }
                 }
