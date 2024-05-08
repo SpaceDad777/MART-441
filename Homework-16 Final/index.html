@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <p>Mouse X: <span id="mouseX">0</span></p>
+    <p>Mouse Y: <span id="mouseY">0</span></p>
+    <script>
+        //mouse
+        document.addEventListener("mousemove", function(event) {
+            var mouseX = event.clientX; // X-coordinate
+            var mouseY = event.clientY; // Y-coordinate
+      
+            document.getElementById("mouseX").textContent = mouseX;
+            document.getElementById("mouseY").textContent = mouseY;
+        });
+
+        var player;
+        var config = {
+            type: Phaser.AUTO,
+            width: 1200,
+            height: 900,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 150 }
+                }
+            },
+
+            scene: {
+                preload: function () {
+                    this.load.image('forestBackground', 'Assets/Forest_background.png');
+                    this.load.image('platform1', 'Assets/Platform/platform1.png');
+                    this.load.image('platform2', 'Assets/Platform/platform2.png');
+                    this.load.image('platform3', 'Assets/Platform/platform3.png');
+                    this.load.image('coin', 'Assets/Objects/coin.png');
+                    this.load.image('gem', 'Assets/Objects/gem.png');
+                    this.load.spritesheet('knight', 'Assets/Character/knight.png', { frameWidth: 32, frameHeight: 48 });
+                    this.load.spritesheet('character', 'Assets/Character/knight.json');
+                },
+
+                create: function () {
+                    this.add.image(400, 300, 'forestBackground').setScale(2);
+
+                    platforms = this.physics.add.staticGroup();
+                    platforms.create(config.width / 2, config.height - 50, 'ground').setScale(4).refreshBody();
+                    platforms.create(600, 450, 'platform1'); //middle
+                    platforms.create(50, 250, 'platform2'); // upper left
+                    platforms.create(900, 185, 'platform3'); // upper right
+                    platforms.create(150, 900, 'platform3'); // ground
+                    platforms.create(600, 900, 'platform3'); // ground middle
+                    platforms.create(1000, 900, 'platform3'); // ground right
+
+                    player = this.physics.add.sprite(100, 450, 'knight');
+                    player.setBounce(0);
+                    player.setCollideWorldBounds(true);
+                    
+
+                    this.anims.create({
+                        key: 'left',
+                        frames: this.anims.generateFrameNumbers('knight', { start: 0, end: 3 }),
+                        frameRate: 20,
+                        repeat: -1
+                    });
+
+                    this.anims.create({
+                        key: 'turn',
+                        frames: [{ key: 'knight', frame: 4 }],
+                        frameRate: 20
+                    });
+
+                    this.anims.create({
+                        key: 'right',
+                        frames: this.anims.generateFrameNumbers('knight', { start: 5, end: 8 }),
+                        frameRate: 20,
+                        repeat: -1
+                    });
+
+                    cursors = this.input.keyboard.createCursorKeys();
+
+                    stars = this.physics.add.group({
+                        key: 'coin',
+                        repeat: 10,
+                        setXY: { x: 12, y: 0, stepX: 100 }
+                    });
+
+                    stars.children.iterate(function (child) {
+                        child.setBounceY(Phaser.Math.FloatBetween(0.2, 0.6));
+                    });
+
+                    bombs = this.physics.add.group();
+
+                    scoreText = this.add.text(900, 825, 'Score: 0', { fontSize: '32px', fill: '#000' });
+                    timerText = this.add.text(100, 825, 'Time: 0', { fontSize: '32px', fill: '#000' });
+
+                    timer = this.time.addEvent({
+                        delay: 1000, // 1 second
+                        callback: updateTimer,
+                        callbackScope: this,
+                        loop: true
+                    });
+                    
+                    function collectStar(player, star) {
+                        star.disableBody(true, true);
+                        score += 10;
+                        scoreText.setText('Score: ' + score);
+
+                        if (stars.countActive(true) === 0) {
+                            stars.children.iterate(function (child) {
+                                child.enableBody(true, child.x, 0, true, true);
+                            });
+
+                            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+                            var bomb = bombs.create(x, 16, 'bomb');
+                            bomb.setBounce(1);
+                            bomb.setCollideWorldBounds(true);
+                            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+                            bomb.allowGravity = false;
+                        }
+                    }
+
+                    function hitBomb(player, bomb) {
+                        this.physics.pause();
+                        player.setTint(0xff0000);
+                        player.anims.play('turn');
+                        gameOver = true;
+                    }
+
+                    this.physics.add.collider(player, platforms);
+                    this.physics.add.collider(stars, platforms);
+                    this.physics.add.collider(bombs, platforms);
+
+                    this.physics.add.overlap(player, stars, collectStar, null, this);
+                    this.physics.add.collider(player, bombs, hitBomb, null, this);
+                },
+
+                update: function () {
+                    if (gameOver) {
+                        return;
+                    }
+
+                    if (cursors.left.isDown) {
+                        player.setVelocityX(-160);
+                        player.anims.play('left', true);
+                    } else if (cursors.right.isDown) {
+                        player.setVelocityX(160);
+                        player.anims.play('right', true);
+                    } else {
+                        player.setVelocityX(0);
+                        player.anims.play('turn');
+                    }
+
+                    if (this.input.keyboard.checkDown(cursors.up, 500) && player.body.touching.down) {
+                        player.setVelocityY(-330);
+                    }
+                }
+            },
+        };
+
+        const game = new Phaser.Game(config);
+    </script>
+</body>
+</html>
