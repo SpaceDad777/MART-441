@@ -81,35 +81,27 @@
 
                     cursors = this.input.keyboard.createCursorKeys();
 
-                    stars = this.physics.add.group({
+                    coins = this.physics.add.group({
                         key: 'coin',
                         repeat: 10,
                         setXY: { x: 12, y: 0, stepX: 100 }
                     });
 
-                    stars.children.iterate(function (child) {
+                    coins.children.iterate(function (child) {
                         child.setBounceY(Phaser.Math.FloatBetween(0.2, 0.6));
                     });
 
                     bombs = this.physics.add.group();
 
-                    scoreText = this.add.text(900, 825, 'Score: 0', { fontSize: '32px', fill: '#000' });
-                    timerText = this.add.text(100, 825, 'Time: 0', { fontSize: '32px', fill: '#000' });
-
-                    timer = this.time.addEvent({
-                        delay: 1000, // 1 second
-                        callback: updateTimer,
-                        callbackScope: this,
-                        loop: true
-                    });
                     
-                    function collectStar(player, star) {
-                        star.disableBody(true, true);
+                    
+                    function collectCoin(player, coins) {
+                        coins.disableBody(true, true);
                         score += 10;
                         scoreText.setText('Score: ' + score);
 
-                        if (stars.countActive(true) === 0) {
-                            stars.children.iterate(function (child) {
+                        if (coins.countActive(true) === 0) {
+                            coins.children.iterate(function (child) {
                                 child.enableBody(true, child.x, 0, true, true);
                             });
 
@@ -131,10 +123,10 @@
                     }
 
                     this.physics.add.collider(player, platforms);
-                    this.physics.add.collider(stars, platforms);
+                    this.physics.add.collider(coins, platforms);
                     this.physics.add.collider(bombs, platforms);
 
-                    this.physics.add.overlap(player, stars, collectStar, null, this);
+                    this.physics.add.overlap(player, coin, collectCoin, null, this);
                     this.physics.add.collider(player, bombs, hitBomb, null, this);
                 },
 
@@ -165,3 +157,4 @@
     </script>
 </body>
 </html>
+star
