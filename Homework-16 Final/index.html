@@ -2,6 +2,7 @@
 <html>
 <head>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+    <script src="TitleScene.js"></script>
     <style>
     </style>
 </head>
@@ -32,7 +33,7 @@
             constructor() {
                 super('GameScene');
                 this.score = 0;
-                this.lives = 6;
+                this.lives = 4;
             }
 
             preload() {
@@ -172,6 +173,43 @@
                 player.setTint(0xff0000);
                 player.anims.play('turn');
                 gameOver = true;
+
+                // Add game over message and options
+                // Add a background box
+                const backgroundBox = this.add.rectangle(config.width / 2, config.height / 2, 600, 300, 0x000000, 0.8);
+                backgroundBox.setOrigin(0.5);
+                
+                const gameOverText = this.add.text(config.width / 2, config.height / 2 - 100, 'Game Over', { fontSize: '48px', fill: '#fff' });
+                gameOverText.setOrigin(0.5);
+
+                const retryButton = this.add.text(config.width / 2, config.height / 2 + 50, 'Retry', { fontSize: '32px', fill: '#fff' });
+                retryButton.setOrigin(0.5);
+                retryButton.setInteractive();
+
+                const homeButton = this.add.text(config.width / 2, config.height / 2 + 100, 'Home', { fontSize: '32px', fill: '#fff' });
+                homeButton.setOrigin(0.5);
+                homeButton.setInteractive();
+
+                // Button actions
+                retryButton.on('pointerdown', () => {
+                    // Add logic to retry the game
+                    console.log('Retry clicked');
+                    gameScene.resetGame();
+                });
+
+                homeButton.on('pointerdown', () => {
+                    // Add logic to go back to the home screen
+                    console.log('Home clicked');
+
+                    // Stop the game and reset variables if needed
+                    this.physics.pause();
+                    gameOver = true;
+                    gemCollected = false;
+                    this.score = 0; // Change score to this.score
+
+                    // Transition to the title screen scene
+                    this.scene.start('TitleScene'); // Replace 'TitleScene' with the actual name of your title screen scene
+                });
             }
 
             levelComplete() {
@@ -179,7 +217,7 @@
                 this.physics.pause();
                 gameOver = true;
 
-                 // Add a background box
+                // Add a background box
                 const backgroundBox = this.add.rectangle(config.width / 2, config.height / 2, 600, 300, 0x000000, 0.8);
                 backgroundBox.setOrigin(0.5);
 
@@ -206,11 +244,35 @@
                 homeButton.on('pointerdown', () => {
                     // Add logic to go back to the home screen
                     console.log('Home clicked');
-                    // Replace this with your logic for going back home
+
+                    // Stop the game and reset variables if needed
+                    this.physics.pause();
+                    gameOver = true;
+                    gemCollected = false;
+                    this.score = 0; // Change score to this.score
+
+                    // Transition to the title screen scene
+                    this.scene.start('TitleScene'); // Replace 'TitleScene' with the actual name of your title screen scene
                 });
             }
 
+            resetGame() {
+                this.score = 0;
+                this.lives = 4;
+                gameOver = false;
+                gemCollected = false;
+                player.setPosition(100, 450);
+                player.setVelocity(0);
+                player.clearTint();
+                this.scene.restart();
+            }
+
+    
         }
+
+        // Create gameScene and titleScene outside the class
+        const gameScene = new GameScene();
+        const titleScene = new TitleScene();
 
         const config = {
             type: Phaser.AUTO,
@@ -226,7 +288,16 @@
             scene: GameScene
         };
 
+        // Create a new Phaser Game instance
         const game = new Phaser.Game(config);
+
+        // Add gameScene and titleScene to the game's scene manager
+        game.scene.add('GameScene', gameScene);
+        game.scene.add('TitleScene', titleScene);
+
+        // Start the title scene
+        game.scene.start('TitleScene');
+
     </script>
 </body>
 </html>
