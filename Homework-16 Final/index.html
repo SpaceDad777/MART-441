@@ -3,11 +3,12 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
     <script src="TitleScene.js"></script>
+    <script src="LevelTwoScene.js"></script>
     <style>
     </style>
 </head>
 <body>
-    <p>Mouse X: <span id="mouseX">0</span></p>
+    <p>Mouse X: <span id="mouseX">0</span></p>   
     <p>Mouse Y: <span id="mouseY">0</span></p>
     <script>
         //mouse
@@ -238,6 +239,7 @@
                 nextLevelButton.on('pointerdown', () => {
                     // Add logic to transition to the next level
                     console.log('Next Level clicked');
+                    this.scene.start('LevelTwoScene')
                     // Replace this with your logic for next level
                 });
 
@@ -273,6 +275,7 @@
         // Create gameScene and titleScene outside the class
         const gameScene = new GameScene();
         const titleScene = new TitleScene();
+        
 
         const config = {
             type: Phaser.AUTO,
