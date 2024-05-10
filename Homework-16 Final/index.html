@@ -3,7 +3,6 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
     <script src="TitleScene.js"></script>
-    <script src="LevelTwoScene.js"></script>
     <style>
     </style>
 </head>
@@ -289,10 +288,12 @@
                 }
             },
             scene: GameScene
+            
         };
 
         // Create a new Phaser Game instance
         const game = new Phaser.Game(config);
+        
 
         // Add gameScene and titleScene to the game's scene manager
         game.scene.add('GameScene', gameScene);
