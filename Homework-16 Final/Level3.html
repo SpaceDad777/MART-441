@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+    <script src="LevelThreeScene.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <p>Mouse X: <span id="mouseX">0</span></p>   
+    <p>Mouse Y: <span id="mouseY">0</span></p>
+    <script>
+        //mouse
+        document.addEventListener("mousemove", function(event) {
+            var mouseX = event.clientX; // X-coordinate
+            var mouseY = event.clientY; // Y-coordinate
+
+            document.getElementById("mouseX").textContent = mouseX;
+            document.getElementById("mouseY").textContent = mouseY;
+        });
+        </script>
+</body>
+</html>
